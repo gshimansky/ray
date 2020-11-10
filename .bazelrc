@@ -34,6 +34,9 @@ build:clang-cl --per_file_copt="-\\.(asm|S)$@-Werror"
 build:msvc     --per_file_copt="-\\.(asm|S)$@-WX"
 # Ignore warnings for protobuf generated files and external projects.
 build --per_file_copt="\\.pb\\.cc$@-w"
+# Ignore one specific warning
+build --per_file_copt="event\\.cc$@-w"
+build --per_file_copt="logging\\.cc$@-w"
 build --per_file_copt="-\\.(asm|S)$,external/.*@-w"
 #build --per_file_copt="external/.*@-Wno-unused-result"
 # Ignore minor warnings for host tools, which we generally can't control
