@@ -327,12 +327,15 @@ def build(build_python, build_java):
         if not os.path.exists(d):
             os.makedirs(d)
 
+    bazel_options = ["--output_user_root=" + root_dir, "--output_base=" + out_dir, "build", "--verbose_failures"]
+    if is_native_windows_or_msys():
+        bazel_options.append("--enable_runfiles=false")
     bazel_targets = []
     bazel_targets += ["//:ray_pkg"] if build_python else []
     bazel_targets += ["//java:ray_java_pkg"] if build_java else []
     return bazel_invoke(
         subprocess.check_call,
-        ["--output_user_root=" + root_dir, "--output_base=" + out_dir, "build", "--verbose_failures", "--"] + bazel_targets,
+        bazel_options + ["--"] + bazel_targets,
         env=bazel_env)
 
 
